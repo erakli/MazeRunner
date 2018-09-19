@@ -10,7 +10,7 @@ public:
     enum Moves {
         Move_Stop = 0,
         Move_Forward,
-        Move_Backwards,
+        Move_Backward,
         Move_Left,
         Move_Right
     };
