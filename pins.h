@@ -7,10 +7,10 @@
 #define PIN_E1  6 // скорость
 #define PIN_E2  5
 
-#define DIR_RIGHT PIN_H1
-#define PWM_RIGHT PIN_E1
-
 #define DIR_LEFT PIN_H2
 #define PWM_LEFT PIN_E2
+
+#define DIR_RIGHT PIN_H1
+#define PWM_RIGHT PIN_E1
 
 #endif

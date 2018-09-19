@@ -17,12 +17,12 @@ iarduino_Position_BMX055 sensorG(BMG);
 uint32_t g_yawTimer;
 double g_yaw = 0;
 
-void OrientationInit() {
+void initOrientation() {
     sensorG.begin();
     g_yawTimer = micros();
 }
 
-double GetYaw() {
+double getYaw() {
     // sensor.read(BMX_DEG); - углы Эйлера в градусах (по умолчанию)
     // sensor.read(BMX_RAD); - углы Эйлера в радианах
     // sensor.read(BMX_M_S); - истинное ускорение в м/с²
@@ -35,5 +35,12 @@ double GetYaw() {
     g_yaw += velZ * ((double)(micros() - g_yawTimer) / 1000000.0);
     g_yaw = constrainAngle(g_yaw);
     g_yawTimer = micros();
+
+#if ORIENTATION_DEBUG
+    Serial.print("yaw=");
+    Serial.print(g_yaw);
+    Serial.print(",");
+#endif
+
     return g_yaw;
 }
