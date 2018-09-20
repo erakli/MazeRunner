@@ -3,6 +3,7 @@
 #include <pid_v1.h>
 
 #include "constants.h"
+#include "utils.h"
 #include "orientation.h"
 #include "motors_controller.h"
 #include "drive_controller.h"
@@ -25,8 +26,8 @@ DriveController::DriveController(const MotorsController &motorsController,
     : m_motorsController(motorsController)
     , m_baseSpeed(baseSpeed)
     , m_currentMove(Move_Stop)
-    , m_leftCorrection(0)
-    , m_rightCorrection(0)
+    , m_leftSpeed(0)
+    , m_rightSpeed(0)
 {
 
 }
@@ -53,6 +54,8 @@ void DriveController::update() {
     Serial.print(pidOutput);
     Serial.print(",");
 #endif
+
+    updateCurrentMove();
 }
 
 
@@ -61,43 +64,36 @@ void DriveController::move(Moves moveCommand, uint8_t newSpeed) {
         setBaseSpeed(newSpeed);
 
     bool needChangeMove = (m_currentMove != moveCommand);
-    if (needChangeMove) {
-        m_motorsController.stop();
-        m_currentMove = moveCommand;
+    if (!needChangeMove) {
+        return;
     }
+
+    m_motorsController.stop();
+    resetTargetAngle();
+    m_currentMove = moveCommand;
 
     switch (moveCommand) {
         case Move_Forward:
-            if (needChangeMove) 
-                m_motorsController.move(MotorsController::Move_Forward);
-            straightLineMove();
+            m_motorsController.move(MotorsController::Move_Forward);
         break;
 
         case Move_Backward:
-            if (needChangeMove) 
-                m_motorsController.move(MotorsController::Move_Backward);
-            straightLineMove();
+            m_motorsController.move(MotorsController::Move_Backward);
         break;
 
         case Move_Left:
-            if (needChangeMove) 
-                m_motorsController.move(MotorsController::Move_RotateLeft);
-            // TODO: PID rotation
+            m_motorsController.move(MotorsController::Move_RotateLeft);
+            setRelativeTargetAngle(+ROTATION_ANGLE_90);
         break;
 
         case Move_Right:
-            if (needChangeMove) 
-                m_motorsController.move(MotorsController::Move_RotateLeft);
-            // TODO: PID rotation
+            m_motorsController.move(MotorsController::Move_RotateRight);
+            setRelativeTargetAngle(-ROTATION_ANGLE_90);
         break;
 
         case Move_Stop:
             // do nothing
         break;
-
-        default:
-            // do nothing
-            ;
     }
 }
 
@@ -111,40 +107,124 @@ void DriveController::initPID() {
 
     // turn the PID on
     rotationPID.SetMode(AUTOMATIC);
+
+    resetTargetAngle();
 }
 
 
-void DriveController::straightLineMove() {
-    evalStraightCorrection();
-    
-    // protect from negative values
-    // NOTE: we can change direction of motors on negative corrections
-    int leftSpeed = m_baseSpeed + m_leftCorrection;        
-    leftSpeed = max(leftSpeed, 0);
+// this method changes current direction on opposite
+void DriveController::changeDirection() {
+    switch (m_currentMove) {
+        case Move_Forward:
+            move(Move_Backward);
+        break;
 
-    int rightSpeed = m_baseSpeed + m_rightCorrection;
-    rightSpeed = max(rightSpeed, 0);
-    
-    m_motorsController.setSpeed(leftSpeed, rightSpeed);
-}
+        case Move_Backward:
+            move(Move_Forward);
+        break;
 
+        // TODO: вот здесь надо подумать. выглядит не очень
+        case Move_Left:
+            m_motorsController.stop();
+            m_motorsController.move(MotorsController::Move_RotateRight);
+            m_currentMove = Move_Right;
+        break;
 
-void DriveController::evalStraightCorrection() {
-    // NOTE: используем глобальщину!
-    int baseCorrection = abs(int(pidOutput / 2.0));
-
-    if (ANGLE_SETPOINT_DELTA < abs(pidOutput)) { 
-        bool turnLeft = (0.0 < pidOutput);
-        bool turnRight = (pidOutput < 0.0);
-
-        if (turnLeft) {
-            m_leftCorrection = -1 * baseCorrection;
-            m_rightCorrection = baseCorrection;
-        } else if (turnRight) {
-            m_leftCorrection = baseCorrection;
-            m_rightCorrection = -1 * baseCorrection;
-        } else {
-            // do nothing
-        }
+        case Move_Right:
+            m_motorsController.stop();
+            m_motorsController.move(MotorsController::Move_RotateLeft);
+            m_currentMove = Move_Left;
+        break;
     }
 }
+
+
+void DriveController::setTargetAngle(float newAngle) {
+    pidSetpoint = constrainAngle(newAngle);
+}
+
+
+void DriveController::setRelativeTargetAngle(float relativeAngle) {
+    setTargetAngle(pidInput + relativeAngle);
+}
+
+
+void DriveController::resetTargetAngle() {
+    // TODO: not sure, is it right
+    pidSetpoint = pidInput;
+}
+
+
+// must be called as soon, as new PID output obtained 
+void DriveController::updateCurrentMove() {
+    bool needChangeSpeed = false;
+    if (m_currentMove == Move_Forward || m_currentMove == Move_Backward)
+        needChangeSpeed = evalStraightCorrection();
+    else if (m_currentMove == Move_Left || m_currentMove == Move_Right)
+        needChangeSpeed = rotationMove();
+    else {
+        // TODO: is it alright?
+        return;
+    }
+
+    if (needChangeSpeed)
+        m_motorsController.setSpeed(m_leftSpeed, m_rightSpeed);
+}
+
+
+bool DriveController::evalStraightCorrection() {
+    int baseCorrection = abs(int(pidOutput / 2.0));
+
+    // TODO: possibly need to be changed on abs(currentAngle - pidSetpoint)
+    if (abs(pidOutput) < ANGLE_SETPOINT_DELTA) {
+        return false;
+    }
+
+    int leftCorrection;
+    int rightCorrection;
+
+    bool turnLeft = (0.0 < pidOutput);
+    bool turnRight = (pidOutput < 0.0);
+
+    if (turnLeft) {
+        leftCorrection = -1 * baseCorrection;
+        rightCorrection = baseCorrection;
+    } else if (turnRight) {
+        leftCorrection = baseCorrection;
+        rightCorrection = -1 * baseCorrection;
+    } else {
+        // do nothing
+    }
+
+    m_leftSpeed = max(m_baseSpeed + leftCorrection, 0);
+    m_rightSpeed = max(m_baseSpeed + rightCorrection, 0);
+
+    return true;
+}
+
+
+bool DriveController::rotationMove() {
+    // TODO: test it. possibly we doesn't need divide
+    uint8_t baseCorrection = abs(int(pidOutput / 2.0));
+
+    // TODO: possibly need to be changed on abs(currentAngle - pidSetpoint)
+    if (abs(pidOutput) < ANGLE_SETPOINT_DELTA) {
+        move(Move_Stop);
+        return false;
+    }
+
+    bool turnLeft = (0.0 < pidOutput);
+    bool turnRight = (pidOutput < 0.0);
+
+    if ((m_currentMove == Move_Left && turnRight) 
+        || (m_currentMove == Move_Right && turnLeft)) 
+    {
+        changeDirection();
+    }
+
+    m_leftSpeed = baseCorrection;
+    m_rightSpeed = baseCorrection;
+
+    return true;
+}
+

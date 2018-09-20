@@ -26,16 +26,24 @@ public:
 
 private:
     void initPID();
-    void straightLineMove();
-    void evalStraightCorrection();
+
+    void changeDirection();
+
+    void setTargetAngle(float newAngle);
+    void setRelativeTargetAngle(float relativeAngle);
+    void resetTargetAngle();
+
+    void updateCurrentMove();
+    bool evalStraightCorrection();
+    bool rotationMove();
 
     MotorsController m_motorsController;
     uint8_t m_baseSpeed;
 
     Moves m_currentMove;
 
-    int m_leftCorrection;
-    int m_rightCorrection;
+    uint8_t m_leftSpeed;
+    uint8_t m_rightSpeed;
 };
 
 #endif
