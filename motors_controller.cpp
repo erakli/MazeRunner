@@ -20,7 +20,6 @@ void MotorsController::move(Moves moveCommand, uint8_t leftSpeed, uint8_t rightS
 #endif
 
     switch (moveCommand) {
-
         case Move_Forward:
             m_motors[Motor_Left].forward();
             m_motors[Motor_Right].forward();
@@ -47,7 +46,6 @@ void MotorsController::move(Moves moveCommand, uint8_t leftSpeed, uint8_t rightS
         
         default:
             return;
-
     } // end switch
 
     if (leftSpeed != 0 || rightSpeed != 0)

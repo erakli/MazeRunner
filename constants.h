@@ -8,6 +8,7 @@
 
 #define GYRO_Z_THRESHOLD 0.15
 
+// TODO: rename it
 #define ANGLE_SETPOINT_DELTA 3
 
 #define PID_OUTPUT_LIMIT_MIN -100
@@ -24,6 +25,9 @@
 
 // motors wouldn't held less than this limit
 #define MINIMAL_MOTOR_SPEED 30
+
+// degrees
+#define ROTATION_ANGLE_90 90
 
 #define SERIAL_SPEED 9600
 
