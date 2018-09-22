@@ -20,6 +20,7 @@ void setup() {
     Serial.begin(SERIAL_SPEED);
     while(!Serial) {
     } 
+    driveController.init();
 #endif
 
 }
@@ -27,6 +28,7 @@ void setup() {
 void loop() {
 
 #if DEBUG
+    driveController.update();
     if (Serial.available()) {
         char income = Serial.read();
 
@@ -40,8 +42,5 @@ void loop() {
             break;
         }
     }
-
-    Serial.println();
-    // delay(1000);
 #endif
 }
