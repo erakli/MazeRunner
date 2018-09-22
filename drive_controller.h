@@ -24,8 +24,7 @@ class DriveController {
     #define PID_NUM 3
 
 public:
-    DriveController(const MotorsController &motorsController, 
-                    uint8_t baseSpeed = DEFAULT_MOTORS_SPEED);
+    DriveController(const MotorsController &motorsController);
 
     void setBaseSpeed(uint8_t baseSpeed);
 

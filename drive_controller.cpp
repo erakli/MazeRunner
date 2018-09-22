@@ -8,10 +8,9 @@
 #include "drive_controller.h"
 
 
-DriveController::DriveController(const MotorsController &motorsController, 
-                                 uint8_t baseSpeed) 
+DriveController::DriveController(const MotorsController &motorsController) 
     : m_motorsController(motorsController)
-    , m_baseSpeed(baseSpeed)
+    , m_baseSpeed(0)
     , m_currentMove(Move_Stop)
     , m_leftSpeed(0)
     , m_rightSpeed(0)
@@ -33,6 +32,9 @@ void DriveController::init() {
 
 // must be called as soon as possible
 void DriveController::update() {
+    yawUpdate();
+    distanceUpdate();
+
     double yaw = getYaw();
     m_pidArray[PID_Rotation].update(yaw);
     m_pidArray[PID_Straight].update(yaw);
@@ -218,9 +220,13 @@ bool DriveController::evalStraightMove() {
         changeDirection();
     }
 
-    // TODO: possibly, we need temp variable for corrected speed
-    m_baseSpeed = baseCorrection;
-    return true;
+    if (baseCorrection != m_baseSpeed) {
+        // TODO: possibly, we need temp variable for corrected speed
+        m_baseSpeed = baseCorrection;
+        return true;
+    }
+
+    return false;
 }
 
 
