@@ -6,11 +6,16 @@
 // микросекунды
 #define ANALOG_DELAY_AFTER_STOP 100 
 
+// in cm
+#define SONAR_MAX_DISTANCE 300
+
+// in uS, how frequently ping distance is updated
+#define PING_SPEED 24
+
 #define GYRO_Z_THRESHOLD 0.15
 
 // TODO: rename it
 #define ANGLE_SETPOINT_DELTA 3
-
 #define DISTANCE_OUTPUT_DELTA 3
 
 // время, через которое будет вычисляться выход ПИДа
