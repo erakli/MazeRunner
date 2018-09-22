@@ -7,10 +7,13 @@
 #define PIN_E1  6 // скорость
 #define PIN_E2  5
 
-#define DIR_LEFT PIN_H2
-#define PWM_LEFT PIN_E2
+#define MOTOR_LEFT_DIR_PIN PIN_H2
+#define MOTOR_LEFT_PWM_PIN PIN_E2
 
-#define DIR_RIGHT PIN_H1
-#define PWM_RIGHT PIN_E1
+#define MOTOR_RIGHT_DIR_PIN PIN_H1
+#define MOTOR_RIGHT_PWM_PIN PIN_E1
+
+#define SONAR_TRIGGER_PIN   3
+#define SONAR_ECHO_PIN      2
 
 #endif
