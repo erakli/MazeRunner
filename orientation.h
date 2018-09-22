@@ -3,5 +3,6 @@
 
 void initOrientation();
 double getYaw();
+double getDistance();
 
 #endif

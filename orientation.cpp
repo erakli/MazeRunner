@@ -44,3 +44,8 @@ double getYaw() {
 
     return g_yaw;
 }
+
+double getDistance() {
+    // TODO: add distance readings from Ultrasonic
+    return 0.0;
+}
