@@ -8,8 +8,8 @@
 
 // array of motors
 Motor g_motors[] = {
-    Motor(DIR_LEFT, PWM_LEFT, true),
-    Motor(DIR_RIGHT, PWM_RIGHT, false)
+    Motor(MOTOR_LEFT_DIR_PIN, MOTOR_LEFT_PWM_PIN, true),
+    Motor(MOTOR_RIGHT_DIR_PIN, MOTOR_RIGHT_PWM_PIN, false)
 };
 
 MotorsController motorsController(g_motors[0], g_motors[1]);
