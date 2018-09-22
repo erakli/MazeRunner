@@ -11,15 +11,28 @@
 // TODO: rename it
 #define ANGLE_SETPOINT_DELTA 3
 
-#define PID_OUTPUT_LIMIT_MIN -100
-#define PID_OUTPUT_LIMIT_MAX 100
+#define DISTANCE_OUTPUT_DELTA 3
 
 // время, через которое будет вычисляться выход ПИДа
 #define PID_SAMPLE_TIME 5 
 
-#define PID_P 5.0
-#define PID_I 0.1
-#define PID_D 0.0
+#define ROTATION_PID_P 5.0
+#define ROTATION_PID_I 0.1
+#define ROTATION_PID_D 0.0
+#define ROTATION_PID_OUTPUT_LIMIT_MIN -100
+#define ROTATION_PID_OUTPUT_LIMIT_MAX 100
+
+#define STRAIGHT_PID_P 1.0
+#define STRAIGHT_PID_I 0.0
+#define STRAIGHT_PID_D 0.0
+#define STRAIGHT_PID_OUTPUT_LIMIT_MIN -100
+#define STRAIGHT_PID_OUTPUT_LIMIT_MAX 100
+
+#define DISTANCE_PID_P 1.0
+#define DISTANCE_PID_I 0.0
+#define DISTANCE_PID_D 0.0
+#define DISTANCE_PID_OUTPUT_LIMIT_MIN -255
+#define DISTANCE_PID_OUTPUT_LIMIT_MAX 255
 
 #define DEFAULT_MOTORS_SPEED 100
 
@@ -34,9 +47,9 @@
 #define DEBUG true
 
 #if DEBUG
-    #define MOTOR_DEBUG true
-    #define ORIENTATION_DEBUG true
-    #define PID_PRINT_DEBUG true
+    #define MOTOR_DEBUG false
+    #define ORIENTATION_DEBUG false
+    #define PID_PRINT_DEBUG false
 #endif
 
 #endif
