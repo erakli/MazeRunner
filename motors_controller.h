@@ -2,8 +2,7 @@
 #define MOTORS_CONTROLLER_H
 
 #include "constants.h"
-
-class Motor;
+#include "motor.h"
 
 // Motors' controller for 2 motors (currently only supports Left and Right)
 class MotorsController {
