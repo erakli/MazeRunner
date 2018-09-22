@@ -2,11 +2,11 @@
 #define DRIVE_CONTROLLER_H
 
 #include "constants.h"
+#include "pid.h"
 
 class MotorsController;
 
 class DriveController {
-public:
     enum Moves {
         Move_Stop = 0,
         Move_Forward,
@@ -15,6 +15,15 @@ public:
         Move_Right
     };
 
+    enum PIDs {
+        PID_Rotation = 0,
+        PID_Straight = 1,
+        PID_Distance = 2
+    };
+
+    #define PID_NUM 3
+
+public:
     DriveController(const MotorsController &motorsController, 
                     uint8_t baseSpeed = DEFAULT_MOTORS_SPEED);
 
@@ -22,22 +31,25 @@ public:
 
     void init();
     void update();
-    void move(Moves moveCommand, uint8_t newSpeed = 0);
+
+    void move(float distance);
+    void turn(float angle);
 
 private:
+    void setPIDCoeffs();
+    void setMove(Moves moveCommand);
+
     void initPID();
 
     void changeDirection();
 
-    void setTargetAngle(float newAngle);
-    void setRelativeTargetAngle(float relativeAngle);
-    void resetTargetAngle();
-
     void updateCurrentMove();
+    bool evalStraightMove();
     bool evalStraightCorrection();
-    bool rotationMove();
+    bool evalRotationMove();
 
     MotorsController m_motorsController;
+    PIDWrapper m_pidArray[PID_NUM];
     uint8_t m_baseSpeed;
 
     Moves m_currentMove;
