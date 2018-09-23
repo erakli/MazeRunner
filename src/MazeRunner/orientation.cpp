@@ -19,11 +19,13 @@ NewPing sonar(SONAR_TRIGGER_PIN, SONAR_ECHO_PIN, SONAR_MAX_DISTANCE);
 uint32_t g_pingTimer;
 uint16_t g_sonarDistance = 0;
 
+
 void initOrientation() {
     sensorG.begin();
     g_yawTimer = micros();
     g_pingTimer = millis();
 }
+
 
 void yawUpdate() {
     // sensor.read(BMX_DEG); - углы Эйлера в градусах (по умолчанию)
@@ -46,9 +48,11 @@ void yawUpdate() {
 #endif
 }
 
+
 double getYaw() {
     return g_yaw;
 }
+
 
 // If ping received, set the sensor distance to array.
 void echoCheckCallback() {
@@ -57,6 +61,7 @@ void echoCheckCallback() {
     }
 }
 
+
 // must be called as soon as possible
 void distanceUpdate() {
     if (g_pingTimer <= millis()) {
@@ -64,6 +69,7 @@ void distanceUpdate() {
         sonar.ping_timer(echoCheckCallback);
     }
 }
+
 
 uint16_t getDistance() {
     return g_sonarDistance;

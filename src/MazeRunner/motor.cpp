@@ -4,6 +4,7 @@
 
 #include "constants.h"
 
+
 #if MOTOR_DEBUG
 void printMotorDebug(const char* name, const char* message) {
     char buffer[50];
@@ -11,6 +12,7 @@ void printMotorDebug(const char* name, const char* message) {
     Serial.write(buffer, n);
 }
 #endif
+
 
 // reverseDirection - изменить основное направление. Предполагается, что
 // направление Forward соответсвует движению вперёд робота
