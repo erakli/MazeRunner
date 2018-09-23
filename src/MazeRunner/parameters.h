@@ -14,7 +14,7 @@
 #define SONAR_SPEED 24
 
 // in deg/sec. Sets threshold, where all values below will be assumed as gyro
-// noise and wiil be set to 0.
+// noise and will be set to 0.
 #define GYRO_Z_THRESHOLD 0.15
 
 // If angular PID output would be less than this value, then contol wouldn't
@@ -25,6 +25,7 @@
 // Sample time, that defines how often PID output would be available.
 #define PID_SAMPLE_TIME 5
 
+// PID parameters
 #define ROTATION_PID_P 5.0
 #define ROTATION_PID_I 0.1
 #define ROTATION_PID_D 0.0
