@@ -4,13 +4,11 @@
 #include <iarduino_Position_BMX055.h>
 
 #include "constants.h"
+#include "defines.h"
 #include "pins.h"
 #include "utils.h"  // constrainAngle
 
-// BMA - акселерометр
-// BMG - гироскоп.
-// BMM - магнитометр.
-// BMX - все датчики
+
 iarduino_Position_BMX055 sensorG(BMG);
 uint32_t g_yawTimer;
 double g_yaw = 0;
@@ -28,10 +26,6 @@ void initOrientation() {
 
 
 void yawUpdate() {
-    // sensor.read(BMX_DEG); - углы Эйлера в градусах (по умолчанию)
-    // sensor.read(BMX_RAD); - углы Эйлера в радианах
-    // sensor.read(BMX_M_S); - истинное ускорение в м/с²
-    // read() - axisX, axisY, axisZ и temp.
     sensorG.read();
     double velZ = sensorG.axisZ;
 
@@ -65,7 +59,7 @@ void echoCheckCallback() {
 // must be called as soon as possible
 void distanceUpdate() {
     if (g_pingTimer <= millis()) {
-        g_pingTimer += PING_SPEED;
+        g_pingTimer += SONAR_SPEED;
         sonar.ping_timer(echoCheckCallback);
     }
 }
