@@ -2,14 +2,18 @@
 
 #include <Arduino.h>  // delayMicroseconds
 
+#include "defines.h"
+
 
 MotorsController::MotorsController(const Motor& left, const Motor& right)
     : m_motors({left, right}) {
+    // Might be used for debug purposes
     setNames("L", "R");
 }
 
 
-void MotorsController::move(Moves moveCommand, uint8_t leftSpeed, uint8_t rightSpeed) {
+void MotorsController::move(Moves moveCommand) {
+    // Before any changes in direction, we must stop Motors.
     stop();
 
 #if MOTOR_DEBUG
@@ -38,15 +42,12 @@ void MotorsController::move(Moves moveCommand, uint8_t leftSpeed, uint8_t rightS
             break;
 
         case Move_Stop:
+            // do nothing, because we already stopped motors
             return;
-            break;
 
         default:
             return;
-    }  // end switch
-
-    if (leftSpeed != 0 || rightSpeed != 0)
-        setSpeed(leftSpeed, rightSpeed);
+    }
 
 #if MOTOR_DEBUG
     Serial.print("|END MOVE|");
@@ -54,6 +55,7 @@ void MotorsController::move(Moves moveCommand, uint8_t leftSpeed, uint8_t rightS
 }
 
 
+// TODO: could be rewritten in key-value manner
 void MotorsController::setSpeed(uint8_t leftSpeed, uint8_t rightSpeed) {
     m_motors[Motor_Left].setSpeed(leftSpeed);
     m_motors[Motor_Right].setSpeed(rightSpeed);
@@ -65,14 +67,10 @@ void MotorsController::stop() {
         m_motors[i].stop();
     }
 
+    // We must do little delay before any changes in speed. By doing this
+    // delay, we guarantee, that Motor has enough time to work out
+    // necessary speed.
     delayMicroseconds(ANALOG_DELAY_AFTER_STOP);
-}
-
-
-void MotorsController::setDirections(Motor::Directions leftDirection,
-                                     Motor::Directions rightDirection) {
-    m_motors[Motor_Left].setDirection(leftDirection);
-    m_motors[Motor_Right].setDirection(rightDirection);
 }
 
 

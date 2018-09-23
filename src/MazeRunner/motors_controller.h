@@ -4,18 +4,27 @@
 #include "constants.h"
 #include "motor.h"
 
-#include <stdint.h>  // uint16_t, etc
+#include <stdint.h>  // uint8_t
 
 
-// Motors' controller for 2 motors (currently only supports Left and Right)
+#define MOTORS_NUM 2
+
+// Controls a pair of Motors.
+// Example:
+//    motorsController.move(MotorsController::Move_Forward);
+//    motorsController.setSpeed(100, 100);
+//    motorsController.stop();
+//
+// Currently supports only Left and Right motors.
 class MotorsController {
 public:
+    // TODO: possibly, it might be declared outside the class?
     enum Moves {
         Move_Stop = 0,
         Move_Forward,
         Move_Backward,
-        Move_RotateLeft,
-        Move_RotateRight
+        Move_RotateLeft,  // rotate CCW
+        Move_RotateRight  // rotate CW
     };
 
     enum Motors {
@@ -25,11 +34,16 @@ public:
 
     MotorsController(const Motor& left, const Motor& right);
 
-    void move(Moves moveCommand, uint8_t leftSpeed = 0, uint8_t rightSpeed = 0);
-    void setSpeed(uint8_t leftSpeed, uint8_t rightSpeed);
-    void stop();
+    // Performs high-level move action by controlling Motors directions. Takes
+    // care about stopping Motors before setting new direction. After call,
+    // `setSpeed` method must be called.
+    void move(Moves moveCommand);
 
-    void setDirections(Motor::Directions leftDirection, Motor::Directions rightDirection);
+    // Values allowed: 0-255.
+    void setSpeed(uint8_t leftSpeed, uint8_t rightSpeed);
+
+    // Stops all motors at once.
+    void stop();
 
 private:
     void setNames(const char* leftName, const char* rightName);
