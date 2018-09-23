@@ -1,6 +1,6 @@
-#include <math.h> // fmod
-
 #include "utils.h"
+
+#include <math.h>  // fmod
 
 int sign(int x) {
     return (x > 0) - (x < 0);

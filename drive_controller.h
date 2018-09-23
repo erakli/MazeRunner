@@ -2,9 +2,8 @@
 #define DRIVE_CONTROLLER_H
 
 #include "constants.h"
+#include "motors_controller.h"
 #include "pid.h"
-
-class MotorsController;
 
 class DriveController {
     enum Moves {
@@ -18,13 +17,13 @@ class DriveController {
     enum PIDs {
         PID_Rotation = 0,
         PID_Straight = 1,
-        PID_Distance = 2
+        PID_Distance = 2,
     };
 
-    #define PID_NUM 3
+#define PID_NUM 3
 
 public:
-    DriveController(const MotorsController &motorsController);
+    DriveController(const MotorsController& motorsController);
 
     void setBaseSpeed(uint8_t baseSpeed);
 

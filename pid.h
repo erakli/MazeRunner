@@ -7,10 +7,10 @@ class PIDWrapper {
 public:
     enum ErrorTypes {
         ErrorType_Normal = 0,
-        ErrorType_Angular
+        ErrorType_Angular,
     };
 
-    PIDWrapper(double Kp = 1.0, double Ki = 0.0, double Kd = 0.0, 
+    PIDWrapper(double Kp = 1.0, double Ki = 0.0, double Kd = 0.0,
                ErrorTypes errorType = ErrorType_Normal);
 
     bool compute();
@@ -23,6 +23,7 @@ public:
     double getOutput() const;
 
     PID* pid();
+
 private:
     bool angularError() const;
 

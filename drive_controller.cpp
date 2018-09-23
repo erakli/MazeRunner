@@ -1,20 +1,16 @@
-#include <Arduino.h>
-
-#include "constants.h"
-#include "utils.h"
-#include "orientation.h"
-#include "pid.h"
-#include "motors_controller.h"
 #include "drive_controller.h"
 
+#include <Arduino.h>  // max
 
-DriveController::DriveController(const MotorsController &motorsController) 
+#include "orientation.h"
+#include "utils.h"
+
+DriveController::DriveController(const MotorsController& motorsController)
     : m_motorsController(motorsController)
     , m_baseSpeed(0)
     , m_currentMove(Move_Stop)
     , m_leftSpeed(0)
-    , m_rightSpeed(0)
-{
+    , m_rightSpeed(0) {
     setPIDCoeffs();
 }
 
@@ -38,7 +34,7 @@ void DriveController::update() {
     double yaw = getYaw();
     m_pidArray[PID_Rotation].update(yaw);
     m_pidArray[PID_Straight].update(yaw);
-    
+
     double distance = getDistance();
     m_pidArray[PID_Distance].update(distance);
 
@@ -100,8 +96,8 @@ void DriveController::setPIDCoeffs() {
     m_pidArray[PID_Straight] = PIDWrapper(STRAIGHT_PID_P, STRAIGHT_PID_I, STRAIGHT_PID_D,
                                           PIDWrapper::ErrorType_Angular);
 
-    m_pidArray[PID_Distance] = PIDWrapper(DISTANCE_PID_P, DISTANCE_PID_I, DISTANCE_PID_D,
-                                          PIDWrapper::ErrorType_Normal);
+    m_pidArray[PID_Distance] = PIDWrapper(
+        DISTANCE_PID_P, DISTANCE_PID_I, DISTANCE_PID_D, PIDWrapper::ErrorType_Normal);
 }
 
 
@@ -118,40 +114,40 @@ void DriveController::setMove(Moves moveCommand) {
     switch (m_currentMove) {
         case Move_Forward:
             m_motorsController.move(MotorsController::Move_Forward);
-        break;
+            break;
 
         case Move_Backward:
             m_motorsController.move(MotorsController::Move_Backward);
-        break;
+            break;
 
         case Move_Left:
             m_motorsController.move(MotorsController::Move_RotateLeft);
-        break;
+            break;
 
         case Move_Right:
             m_motorsController.move(MotorsController::Move_RotateRight);
-        break;
+            break;
 
         case Move_Stop:
             m_motorsController.stop();
-        break;
+            break;
     }
 }
 
 
 void DriveController::initPID() {
-    m_pidArray[PID_Rotation].pid()
-        ->SetOutputLimits(ROTATION_PID_OUTPUT_LIMIT_MIN, ROTATION_PID_OUTPUT_LIMIT_MAX);
+    m_pidArray[PID_Rotation].pid()->SetOutputLimits(
+        ROTATION_PID_OUTPUT_LIMIT_MIN, ROTATION_PID_OUTPUT_LIMIT_MAX);
 
-    m_pidArray[PID_Straight].pid()
-        ->SetOutputLimits(STRAIGHT_PID_OUTPUT_LIMIT_MIN, STRAIGHT_PID_OUTPUT_LIMIT_MAX);
+    m_pidArray[PID_Straight].pid()->SetOutputLimits(
+        STRAIGHT_PID_OUTPUT_LIMIT_MIN, STRAIGHT_PID_OUTPUT_LIMIT_MAX);
 
-    m_pidArray[PID_Distance].pid()
-        ->SetOutputLimits(DISTANCE_PID_OUTPUT_LIMIT_MIN, DISTANCE_PID_OUTPUT_LIMIT_MAX);
+    m_pidArray[PID_Distance].pid()->SetOutputLimits(
+        DISTANCE_PID_OUTPUT_LIMIT_MIN, DISTANCE_PID_OUTPUT_LIMIT_MAX);
 
     // TODO: not sure is it needed
     // установим частоту вычисления ПИДа
-    // rotationPID.SetSampleTime(PID_SAMPLE_TIME); 
+    // rotationPID.SetSampleTime(PID_SAMPLE_TIME);
 
     // TODO: PID_NUM - possibly bad practice
     for (uint8_t i = 0; i < PID_NUM; i++) {
@@ -167,24 +163,24 @@ void DriveController::changeDirection() {
     switch (m_currentMove) {
         case Move_Forward:
             setMove(Move_Backward);
-        break;
+            break;
 
         case Move_Backward:
             setMove(Move_Forward);
-        break;
+            break;
 
         case Move_Left:
             setMove(Move_Right);
-        break;
+            break;
 
         case Move_Right:
             setMove(Move_Left);
-        break;
+            break;
     }
 }
 
 
-// must be called as soon, as new PID output obtained 
+// must be called as soon, as new PID output obtained
 void DriveController::updateCurrentMove() {
     bool needChangeSpeed = false;
     if (m_currentMove == Move_Forward || m_currentMove == Move_Backward) {
@@ -214,9 +210,8 @@ bool DriveController::evalStraightMove() {
     bool forward = (0.0 < output);
     bool backward = (output < 0.0);
 
-    if ((m_currentMove == Move_Forward && backward) 
-        || (m_currentMove == Move_Backward && forward)) 
-    {
+    if ((m_currentMove == Move_Forward && backward) ||
+        (m_currentMove == Move_Backward && forward)) {
         changeDirection();
     }
 
@@ -275,9 +270,8 @@ bool DriveController::evalRotationMove() {
     bool turnLeft = (0.0 < output);
     bool turnRight = (output < 0.0);
 
-    if ((m_currentMove == Move_Left && turnRight) 
-        || (m_currentMove == Move_Right && turnLeft)) 
-    {
+    if ((m_currentMove == Move_Left && turnRight) ||
+        (m_currentMove == Move_Right && turnLeft)) {
         changeDirection();
     }
 
@@ -285,4 +279,3 @@ bool DriveController::evalRotationMove() {
     m_rightSpeed = baseCorrection;
     return true;
 }
-

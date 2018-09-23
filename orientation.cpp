@@ -1,14 +1,11 @@
-// #define BMX055_DISABLE_MADGWICK
-// #define BMX055_ENABLE_MAHONY
-// #define BMX055_DISABLE_BMM
-#include <iarduino_Position_BMX055.h>
-#include <NewPing.h>
-
-#include "pins.h"
-#include "constants.h"
-#include "utils.h" // constrainAngle
-
 #include "orientation.h"
+
+#include <NewPing.h>
+#include <iarduino_Position_BMX055.h>
+
+#include "constants.h"
+#include "pins.h"
+#include "utils.h"  // constrainAngle
 
 // BMA - акселерометр
 // BMG - гироскоп.
@@ -36,7 +33,7 @@ void yawUpdate() {
     sensorG.read();
     double velZ = sensorG.axisZ;
 
-    if(abs(velZ) < GYRO_Z_THRESHOLD)
+    if (abs(velZ) < GYRO_Z_THRESHOLD)
         velZ = 0.0;
     g_yaw += velZ * ((double)(micros() - g_yawTimer) / 1000000.0);
     g_yaw = constrainAngle(g_yaw);
@@ -54,7 +51,7 @@ double getYaw() {
 }
 
 // If ping received, set the sensor distance to array.
-void echoCheckCallback() { 
+void echoCheckCallback() {
     if (sonar.check_timer()) {
         g_sonarDistance = sonar.ping_result / US_ROUNDTRIP_CM;
     }

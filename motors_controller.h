@@ -4,6 +4,8 @@
 #include "constants.h"
 #include "motor.h"
 
+#include <stdint.h>  // uint16_t, etc
+
 // Motors' controller for 2 motors (currently only supports Left and Right)
 class MotorsController {
 public:
@@ -17,20 +19,19 @@ public:
 
     enum Motors {
         Motor_Left = 0,
-        Motor_Right = 1
+        Motor_Right = 1,
     };
 
-    MotorsController(const Motor &left, const Motor &right);
+    MotorsController(const Motor& left, const Motor& right);
 
     void move(Moves moveCommand, uint8_t leftSpeed = 0, uint8_t rightSpeed = 0);
     void setSpeed(uint8_t leftSpeed, uint8_t rightSpeed);
     void stop();
 
-    void setDirections(Motor::Directions leftDirection, 
-                       Motor::Directions rightDirection);
+    void setDirections(Motor::Directions leftDirection, Motor::Directions rightDirection);
 
 private:
-    void setNames(const char *leftName, const char *rightName);
+    void setNames(const char* leftName, const char* rightName);
 
     Motor m_motors[MOTORS_NUM];
 };

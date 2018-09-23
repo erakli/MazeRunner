@@ -1,16 +1,13 @@
-#include <Arduino.h>
+#include "pid.h"
 
 #include "utils.h"
-#include "pid.h"
 
 PIDWrapper::PIDWrapper(double Kp, double Ki, double Kd, ErrorTypes errorType)
     : m_setpoint(0.0)
     , m_input(0.0)
     , m_output(0.0)
     , m_pid(&m_input, &m_output, &m_setpoint, Kp, Ki, Kd, DIRECT)
-    , m_errorType(errorType)
-{
-
+    , m_errorType(errorType) {
 }
 
 bool PIDWrapper::compute() {

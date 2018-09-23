@@ -4,7 +4,7 @@
 #define MOTORS_NUM 2
 
 // микросекунды
-#define ANALOG_DELAY_AFTER_STOP 100 
+#define ANALOG_DELAY_AFTER_STOP 100
 
 // in cm
 #define SONAR_MAX_DISTANCE 300
@@ -19,7 +19,7 @@
 #define DISTANCE_OUTPUT_DELTA 3
 
 // время, через которое будет вычисляться выход ПИДа
-#define PID_SAMPLE_TIME 5 
+#define PID_SAMPLE_TIME 5
 
 #define ROTATION_PID_P 5.0
 #define ROTATION_PID_I 0.1
@@ -52,9 +52,9 @@
 #define DEBUG true
 
 #if DEBUG
-    #define MOTOR_DEBUG false
-    #define ORIENTATION_DEBUG false
-    #define PID_PRINT_DEBUG false
+#define MOTOR_DEBUG false
+#define ORIENTATION_DEBUG false
+#define PID_PRINT_DEBUG false
 #endif
 
 #endif
