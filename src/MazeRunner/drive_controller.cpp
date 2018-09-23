@@ -17,8 +17,15 @@ DriveController::DriveController(const MotorsController& motorsController)
 }
 
 
-void DriveController::setBaseSpeed(uint8_t baseSpeed) {
-    m_baseSpeed = baseSpeed;
+void DriveController::setBaseSpeed(int baseSpeed) {
+    if (baseSpeed > UINT8_MAX)
+        m_baseSpeed = UINT8_MAX;
+    else if (baseSpeed < MINIMAL_MOTOR_SPEED) {
+        setMove(Move_Stop);  // TEST: don't know if this needed
+        m_baseSpeed = 0;
+    } else {
+        m_baseSpeed = baseSpeed;
+    }
 }
 
 
@@ -200,7 +207,7 @@ void DriveController::updateCurrentMove() {
 
 bool DriveController::evalStraightMove() {
     double output = m_pidArray[PID_Distance].getOutput();
-    uint8_t baseCorrection = abs(int(output));
+    uint16_t baseCorrection = abs(int(output));
 
     if (abs(output) < MINIMAL_MOTOR_SPEED) {
         setMove(Move_Stop);
@@ -230,7 +237,7 @@ bool DriveController::evalStraightCorrection() {
     int baseCorrection = abs(int(output / 2.0));
 
     // TODO: possibly need to be changed on abs(currentAngle - pidSetpoint)
-    if (abs(output) < ANGLE_SETPOINT_DELTA) {
+    if (abs(output) < ANGLE_PID_OUTPUT_THERSHOLD) {
         return false;
     }
 
@@ -262,7 +269,7 @@ bool DriveController::evalRotationMove() {
     uint8_t baseCorrection = abs(int(output / 2.0));
 
     // TODO: possibly need to be changed on abs(currentAngle - pidSetpoint)
-    if (abs(output) < ANGLE_SETPOINT_DELTA) {
+    if (abs(output) < ANGLE_PID_OUTPUT_THERSHOLD) {
         setMove(Move_Stop);
         return false;
     }

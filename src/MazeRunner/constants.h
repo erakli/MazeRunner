@@ -17,9 +17,10 @@
 // noise and wiil be set to 0.
 #define GYRO_Z_THRESHOLD 0.15
 
-// TODO: rename it
-#define ANGLE_SETPOINT_DELTA 3
-#define DISTANCE_OUTPUT_DELTA 3
+// If angular PID output would be less than this value, then contol wouldn't
+// be performed.
+// TODO: possibly, its name or usage should be changed
+#define ANGLE_PID_OUTPUT_THERSHOLD 3
 
 // Sample time, that defines how often PID output would be available.
 #define PID_SAMPLE_TIME 5

@@ -30,7 +30,8 @@ public:
     DriveController(const MotorsController& motorsController);
 
     // Sets new base speed, which will be used in `updateCurrentMove` function.
-    void setBaseSpeed(uint8_t baseSpeed);
+    // Applies upper and lower constraints on input value.
+    void setBaseSpeed(int baseSpeed);
 
     // Initializes all PIDs and sensors. Must be called before any other
     // methods. For example, in `setup()`.
@@ -70,7 +71,7 @@ private:
     // Computes `baseSpeed` according to `PID_Distance` output.
     bool evalStraightMove();
 
-    // Computes `leftSpeed` and `rightSpeed` values according to `PID_Straight` 
+    // Computes `leftSpeed` and `rightSpeed` values according to `PID_Straight`
     // output. Thus, it corrects deviations during straight line movement.
     bool evalStraightCorrection();
 
