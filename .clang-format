@@ -43,11 +43,12 @@ IndentFunctionDeclarationAfterType: false
 MaxEmptyLinesToKeep: 2  
 KeepEmptyLinesAtTheStartOfBlocks: false  
 NamespaceIndentation: None  
+PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 1  
-PenaltyBreakComment: 300  
+PenaltyBreakComment: 100  
 PenaltyBreakString: 1000  
 PenaltyBreakFirstLessLess: 120  
-PenaltyExcessCharacter: 1  
+PenaltyExcessCharacter: 50  
 PenaltyReturnTypeOnItsOwnLine: 1000  
 PointerAlignment: Left  
 ReflowComments: true
