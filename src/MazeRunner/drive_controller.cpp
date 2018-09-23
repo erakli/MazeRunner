@@ -153,8 +153,7 @@ void DriveController::initPID() {
 
     // TODO: PID_NUM - possibly bad practice
     for (uint8_t i = 0; i < PID_USED_NUM; i++) {
-        // TODO: not sure if this needed
-        // m_pidArray[i].pid()->SetSampleTime(PID_SAMPLE_TIME);
+        m_pidArray[i].pid()->SetSampleTime(PID_SAMPLE_TIME);
 
         // turn the PID on
         m_pidArray[i].pid()->SetMode(AUTOMATIC);

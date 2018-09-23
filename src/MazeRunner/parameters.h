@@ -23,7 +23,7 @@
 #define ANGLE_PID_OUTPUT_THERSHOLD 3
 
 // Sample time, that defines how often PID output would be available.
-#define PID_SAMPLE_TIME 5
+#define PID_SAMPLE_TIME 100
 
 // PID parameters
 #define ROTATION_PID_P 5.0
