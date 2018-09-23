@@ -12,32 +12,28 @@ PIDWrapper::PIDWrapper(double Kp, double Ki, double Kd, ErrorTypes errorType)
 }
 
 
-bool PIDWrapper::compute() {
-    return m_pid.Compute(angularError());
+bool PIDWrapper::update(double input) {
+    m_input = input;
+    return m_pid.Compute(isAngularError());
 }
 
 
 void PIDWrapper::setTarget(double newTarget) {
-    if (angularError())
+    if (isAngularError())
         m_setpoint = constrainAngle(newTarget);
     else
         m_setpoint = newTarget;
 }
 
 
-void PIDWrapper::setRelative(double retativeTarget) {
-    setTarget(m_input + retativeTarget);
+void PIDWrapper::setRelative(double relativeTarget) {
+    setTarget(m_input + relativeTarget);
 }
 
 
 void PIDWrapper::reset() {
     // TODO: not sure, is it right. Possibly, we can reset it with PID_v1
     m_setpoint = m_input;
-}
-
-
-void PIDWrapper::update(double input) {
-    m_input = input;
 }
 
 
@@ -51,6 +47,6 @@ PID* PIDWrapper::pid() {
 }
 
 
-bool PIDWrapper::angularError() const {
+bool PIDWrapper::isAngularError() const {
     return (m_errorType == ErrorType_Angular);
 }
