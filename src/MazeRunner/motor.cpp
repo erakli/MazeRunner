@@ -18,9 +18,12 @@ Motor::Motor(uint8_t pin, uint8_t pwmPin, bool reverseDirection)
     : m_pin(pin), m_pwmPin(pwmPin), m_reverseDirection(reverseDirection) {
     pinMode(pin, OUTPUT);
 
-    // from: https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/
-    // You do not need to call pinMode() to set the pin as an output before calling analogWrite().
-    // The analogWrite function has nothing to do with the analog pins or the analogRead function.
+    // from:
+    // https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/
+    // You do not need to call pinMode() to set the pin as an output before
+    // calling analogWrite(). The analogWrite function has nothing to do with
+    // the analog pins or the analogRead function.
+
     // pinMode(pwmPin, OUTPUT);
 
     if (!m_reverseDirection) {

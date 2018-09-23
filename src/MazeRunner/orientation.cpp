@@ -3,8 +3,8 @@
 #include <NewPing.h>
 #include <iarduino_Position_BMX055.h>
 
-#include "constants.h"
 #include "defines.h"
+#include "parameters.h"
 #include "pins.h"
 #include "utils.h"  // constrainAngle
 

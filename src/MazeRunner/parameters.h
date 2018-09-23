@@ -1,8 +1,8 @@
 /* This module contains all numerical parameters that configures project.
  */
 
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef PARAMETERS_H
+#define PARAMETERS_H
 
 // in uS. Delay that performed after motors has been stopped.
 #define ANALOG_DELAY_AFTER_STOP 100
