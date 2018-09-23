@@ -1,7 +1,22 @@
-Language: Cpp  
+# https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+Language: Cpp
+
+BasedOnStyle: Google
+TabWidth: 4
+IndentWidth: 4
+UseTab: Never
+ColumnLimit: 80
+
+Standard: Cpp11
+DisableFormat: false
+
+IncludeBlocks: Preserve
+
 AccessModifierOffset: -4  
 AlignAfterOpenBracket: Align
 AlignTrailingComments: true  
+AlignOperands: true
 AllowAllParametersOfDeclarationOnNextLine: true  
 AllowShortBlocksOnASingleLine: false  
 AllowShortFunctionsOnASingleLine: None  
@@ -12,20 +27,17 @@ AlwaysBreakTemplateDeclarations: true
 BinPackParameters: true  
 BreakBeforeBinaryOperators: false  
 BreakBeforeBraces: Attach  
-BreakBeforeTernaryOperators: false  
-BreakConstructorInitializersBeforeComma: false  
-ColumnLimit: 80  
+BreakBeforeTernaryOperators: false
+BreakConstructorInitializers: BeforeComma
 CommentPragmas: ''  
 ConstructorInitializerAllOnOneLineOrOnePerLine: true  
 ConstructorInitializerIndentWidth: 4  
 ContinuationIndentWidth: 4  
-DerivePointerAlignment: false  
-DisableFormat: false  
+DerivePointerAlignment: false
 ExperimentalAutoDetectBinPacking: false 
 FixNamespaceComments: true 
 IndentCaseLabels: true  
 IndentPPDirectives: None
-IndentWidth: 4  
 IndentWrappedFunctionNames: false  
 IndentFunctionDeclarationAfterType: false  
 MaxEmptyLinesToKeep: 2  
@@ -38,15 +50,13 @@ PenaltyBreakFirstLessLess: 120
 PenaltyExcessCharacter: 1  
 PenaltyReturnTypeOnItsOwnLine: 1000  
 PointerAlignment: Left  
+ReflowComments: true
 SpaceBeforeAssignmentOperators: true  
 SpaceBeforeParens: ControlStatements  
 SpaceInEmptyParentheses: false  
-SpacesBeforeTrailingComments: 1  
+SpacesBeforeTrailingComments: 2
 SpacesInAngles: false  
 SpacesInCStyleCastParentheses: false  
 SpacesInContainerLiterals: true  
 SpacesInParentheses: false  
 Cpp11BracedListStyle: true  
-Standard: Cpp11  
-TabWidth: 4  
-UseTab: Never
