@@ -1,3 +1,6 @@
+/* This file contains definitions of math functions.
+ */
+
 #ifndef UTILS_H
 #define UTILS_H
 

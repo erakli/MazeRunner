@@ -1,24 +1,27 @@
+/* This module contains all numerical parameters that configures project.
+ */
+
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define MOTORS_NUM 2
-
-// микросекунды
+// in uS. Delay that performed after motors has been stopped.
 #define ANALOG_DELAY_AFTER_STOP 100
 
-// in cm
+// in cm. All readings beyond this value are set to 0. From NewPing library.
 #define SONAR_MAX_DISTANCE 300
 
-// in uS, how frequently ping distance is updated
-#define PING_SPEED 24
+// in uS. How frequently sonar distance would be updated.
+#define SONAR_SPEED 24
 
+// in deg/sec. Sets threshold, where all values below will be assumed as gyro
+// noise and wiil be set to 0.
 #define GYRO_Z_THRESHOLD 0.15
 
 // TODO: rename it
 #define ANGLE_SETPOINT_DELTA 3
 #define DISTANCE_OUTPUT_DELTA 3
 
-// время, через которое будет вычисляться выход ПИДа
+// Sample time, that defines how often PID output would be available.
 #define PID_SAMPLE_TIME 5
 
 #define ROTATION_PID_P 5.0
@@ -39,22 +42,13 @@
 #define DISTANCE_PID_OUTPUT_LIMIT_MIN -255
 #define DISTANCE_PID_OUTPUT_LIMIT_MAX 255
 
-#define DEFAULT_MOTORS_SPEED 100
-
-// motors wouldn't held less than this limit
+// allowed values: 0-255. Motors wouldn't have speed less than this limit.
 #define MINIMAL_MOTOR_SPEED 30
 
-// degrees
+// in degrees.
 #define ROTATION_ANGLE_90 90
 
-#define SERIAL_SPEED 9600
-
-#define DEBUG true
-
-#if DEBUG
-#define MOTOR_DEBUG false
-#define ORIENTATION_DEBUG false
-#define PID_PRINT_DEBUG false
-#endif
+// Typical values: 9600, 38400, 57600, 115200.
+#define SERIAL_BAUDRATE 9600
 
 #endif

@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "constants.h"
+#include "defines.h"
 
 
 #if MOTOR_DEBUG
@@ -14,8 +14,6 @@ void printMotorDebug(const char* name, const char* message) {
 #endif
 
 
-// reverseDirection - изменить основное направление. Предполагается, что
-// направление Forward соответсвует движению вперёд робота
 Motor::Motor(uint8_t pin, uint8_t pwmPin, bool reverseDirection)
     : m_pin(pin), m_pwmPin(pwmPin), m_reverseDirection(reverseDirection) {
     pinMode(pin, OUTPUT);
@@ -23,7 +21,6 @@ Motor::Motor(uint8_t pin, uint8_t pwmPin, bool reverseDirection)
     // from: https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/
     // You do not need to call pinMode() to set the pin as an output before calling analogWrite().
     // The analogWrite function has nothing to do with the analog pins or the analogRead function.
-
     // pinMode(pwmPin, OUTPUT);
 
     if (!m_reverseDirection) {
